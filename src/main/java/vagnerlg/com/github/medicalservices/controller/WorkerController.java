@@ -1,7 +1,8 @@
 package vagnerlg.com.github.medicalservices.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vagnerlg.com.github.medicalservices.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.model.Worker;
@@ -28,7 +29,7 @@ public class WorkerController {
     }
 
     @PostMapping
-    public Worker create(@RequestBody Worker worker) {
+    public Worker create(@RequestBody @Valid Worker worker) {
         return repository.save(worker);
     }
 
@@ -39,13 +40,12 @@ public class WorkerController {
                 w.setName(worker.getName());
                 w.setOccupation(worker.getOccupation());
                 return repository.save(w);
-            }).orElseThrow();
+            }).orElseThrow(() -> new NotFoundException("Worker", id));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> delete(@PathVariable UUID id) {
+    @ResponseStatus(HttpStatus.CREATED)
+    public void delete(@PathVariable UUID id) {
         repository.deleteById(id);
-
-        return ResponseEntity.noContent().build();
     }
 }
