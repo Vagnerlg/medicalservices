@@ -34,7 +34,7 @@ public class WorkerController {
     }
 
     @PutMapping("/{id}")
-    public Worker edit(@RequestBody Worker worker, @PathVariable UUID id) {
+    public Worker edit(@RequestBody @Valid Worker worker, @PathVariable UUID id) {
         return repository.findById(id)
             .map(w -> {
                 w.setName(worker.getName());

@@ -1,14 +1,12 @@
 package vagnerlg.com.github.medicalservices.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -26,4 +24,12 @@ public class Worker {
 
     @NotBlank
     private String occupation;
+
+    @ManyToMany(cascade=CascadeType.PERSIST)
+    @JoinTable(
+            name = "company_worker",
+            joinColumns = {@JoinColumn(name = "worker_id")},
+            inverseJoinColumns = {@JoinColumn(name = "company_id")}
+    )
+    private Set<Company> companies;
 }
