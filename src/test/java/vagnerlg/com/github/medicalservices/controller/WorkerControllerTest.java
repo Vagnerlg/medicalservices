@@ -2,10 +2,9 @@ package vagnerlg.com.github.medicalservices.controller;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.test.web.servlet.MockMvc;
 import vagnerlg.com.github.medicalservices.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.model.Worker;
 import vagnerlg.com.github.medicalservices.repository.WorkerRepository;
@@ -13,38 +12,44 @@ import vagnerlg.com.github.medicalservices.repository.WorkerRepository;
 import java.util.Collections;
 import java.util.UUID;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@WebMvcTest(WorkerController.class)
 public class WorkerControllerTest {
 
-
-    @Value(value = "${local.server.port}")
-    private int port;
+    @Autowired
+    private MockMvc mockMvc;
 
     @Autowired
-    private TestRestTemplate restTemplate;
+    private WorkerController workerController;
 
     @MockBean
     private WorkerRepository repository;
 
     @Test
-    public void shouldListReturnWorkers() {
+    public void shouldListReturnWorkers() throws Exception {
         when(repository.findAll()).thenReturn(
                 Collections.singletonList(new Worker(null, "Vagner", "Advogado", null))
         );
 
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/worker", String.class))
-                .contains("[{\"id\":null,\"name\":\"Vagner\",\"occupation\":\"Advogado\",\"companies\":null}]");
+        mockMvc.perform(get("/worker"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().string("[{\"id\":null,\"name\":\"Vagner\",\"occupation\":\"Advogado\",\"companies\":null}]"));
     }
 
     @Test
-    public void shouldFindAndReturnNotFoundId() {
+    public void shouldFindAndReturnNotFoundId() throws Exception {
         UUID id = UUID.randomUUID();
         when(repository.findById(id)).thenThrow(new NotFoundException("worker", id));
 
-        assertThat(restTemplate.getForObject("http://localhost:" + port + "/worker/" + id, String.class))
-                .contains("{\"errors\":\"worker " + id + " not found.\"}");
+        mockMvc.perform(get("/worker/" + id))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andExpect(content().string("{\"errors\":\"worker " + id + " not found.\"}"));
     }
 }
