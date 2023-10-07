@@ -1,6 +1,7 @@
 package vagnerlg.com.github.medicalservices.response;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -34,5 +35,13 @@ public class ExceptionHandlerResponse {
         });
 
         return errors;
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Map<String, String> notReadable(HttpMessageNotReadableException ex) {
+        Map<String,String> map = new HashMap<>();
+        map.put("errors", ex.getMessage());
+        return map;
     }
 }

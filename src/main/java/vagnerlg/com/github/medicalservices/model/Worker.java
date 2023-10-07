@@ -5,7 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import vagnerlg.com.github.medicalservices.schedule.domain.entity.Schedule;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -32,4 +34,7 @@ public class Worker {
             inverseJoinColumns = {@JoinColumn(name = "company_id")}
     )
     private Set<Company> companies;
+
+    @OneToMany(mappedBy = "worker")
+    private Set<Schedule> schedules;
 }
