@@ -1,0 +1,19 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+      show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: example
+    initialization-mode: always
+    initialize: true
+    schema: classpath:/schema.sql
+    continue-on-error: true
+maps:
+  google:
+    key: ${GOOGLE_MAPS_KEY}

@@ -24,8 +24,10 @@ public class Address {
     @NotNull
     private String number;
 
-    @NotNull
     private String complement;
+
+    @NotNull
+    private String municipal;
 
     @NotNull
     private String state;
@@ -35,6 +37,10 @@ public class Address {
 
     @NotNull
     private String postalCode;
+
+    private Float latitude;
+
+    private Float longitude;
 
     @ManyToOne
     @JoinColumn(name = "company_id")
