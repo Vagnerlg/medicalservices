@@ -17,3 +17,6 @@ spring:
 maps:
   google:
     key: ${GOOGLE_MAPS_KEY}
+fileSystem:
+  local:
+    dir: /tmp/medical-services/files/
