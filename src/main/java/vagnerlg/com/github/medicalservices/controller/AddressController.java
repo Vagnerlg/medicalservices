@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import vagnerlg.com.github.medicalservices.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.model.Address;
-import vagnerlg.com.github.medicalservices.model.Company;
+import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.repository.AddressRepository;
-import vagnerlg.com.github.medicalservices.repository.CompanyRepository;
+import vagnerlg.com.github.medicalservices.company.CompanyRepository;
 
 import java.util.List;
 import java.util.Map;

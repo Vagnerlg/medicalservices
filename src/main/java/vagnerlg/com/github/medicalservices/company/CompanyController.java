@@ -1,12 +1,10 @@
-package vagnerlg.com.github.medicalservices.controller;
+package vagnerlg.com.github.medicalservices.company;
 
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import vagnerlg.com.github.medicalservices.exception.NotFoundException;
-import vagnerlg.com.github.medicalservices.model.Company;
-import vagnerlg.com.github.medicalservices.repository.CompanyRepository;
 
 import java.util.List;
 import java.util.UUID;

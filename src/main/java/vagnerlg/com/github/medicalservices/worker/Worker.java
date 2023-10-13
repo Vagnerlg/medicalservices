@@ -6,7 +6,7 @@ import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 import vagnerlg.com.github.medicalservices.file.File;
-import vagnerlg.com.github.medicalservices.model.Company;
+import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.schedule.domain.entity.Schedule;
 
 import java.time.LocalDateTime;

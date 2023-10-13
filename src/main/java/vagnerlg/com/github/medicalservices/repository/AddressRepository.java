@@ -2,7 +2,7 @@ package vagnerlg.com.github.medicalservices.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import vagnerlg.com.github.medicalservices.model.Address;
-import vagnerlg.com.github.medicalservices.model.Company;
+import vagnerlg.com.github.medicalservices.company.Company;
 
 import java.util.List;
 import java.util.UUID;
