@@ -1,7 +1,6 @@
-package vagnerlg.com.github.medicalservices.schedule.domain.repository;
+package vagnerlg.com.github.medicalservices.schedule;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vagnerlg.com.github.medicalservices.schedule.domain.entity.Schedule;
 
 import java.util.UUID;
 

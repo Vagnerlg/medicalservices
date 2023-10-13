@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.schedule.domain;
+package vagnerlg.com.github.medicalservices.schedule.montage;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;

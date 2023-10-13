@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.schedule.domain;
+package vagnerlg.com.github.medicalservices.schedule.montage;
 
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;

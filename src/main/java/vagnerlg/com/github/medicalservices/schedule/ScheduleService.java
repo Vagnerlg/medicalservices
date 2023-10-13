@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.schedule.domain.service;
+package vagnerlg.com.github.medicalservices.schedule;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -7,9 +7,7 @@ import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.company.CompanyRepository;
 import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
-import vagnerlg.com.github.medicalservices.schedule.domain.Montage;
-import vagnerlg.com.github.medicalservices.schedule.domain.entity.Schedule;
-import vagnerlg.com.github.medicalservices.schedule.domain.repository.ScheduleRepository;
+import vagnerlg.com.github.medicalservices.schedule.montage.Montage;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,7 +39,8 @@ public class ScheduleService {
                     date,
                     date.plusMinutes(30),
                     worker,
-                    company
+                    company,
+                    null
             );
             schedules.add(schedule);
         }

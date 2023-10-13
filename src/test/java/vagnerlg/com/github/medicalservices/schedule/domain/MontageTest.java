@@ -1,6 +1,7 @@
 package vagnerlg.com.github.medicalservices.schedule.domain;
 
 import org.junit.jupiter.api.Test;
+import vagnerlg.com.github.medicalservices.schedule.montage.*;
 
 import java.time.DayOfWeek;
 import java.util.List;
