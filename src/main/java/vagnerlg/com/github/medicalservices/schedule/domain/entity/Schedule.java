@@ -6,7 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import vagnerlg.com.github.medicalservices.model.Company;
-import vagnerlg.com.github.medicalservices.model.Worker;
+import vagnerlg.com.github.medicalservices.worker.Worker;
 
 import java.time.LocalDateTime;
 import java.util.UUID;

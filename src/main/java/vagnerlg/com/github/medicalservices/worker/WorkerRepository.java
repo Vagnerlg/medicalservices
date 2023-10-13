@@ -1,7 +1,6 @@
-package vagnerlg.com.github.medicalservices.repository;
+package vagnerlg.com.github.medicalservices.worker;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import vagnerlg.com.github.medicalservices.model.Worker;
 
 import java.util.UUID;
 

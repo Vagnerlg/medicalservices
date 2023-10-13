@@ -1,21 +1,21 @@
-package vagnerlg.com.github.medicalservices.model;
+package vagnerlg.com.github.medicalservices.worker;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
+import vagnerlg.com.github.medicalservices.file.File;
+import vagnerlg.com.github.medicalservices.model.Company;
 import vagnerlg.com.github.medicalservices.schedule.domain.entity.Schedule;
 
-import java.util.List;
+import java.time.LocalDateTime;
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
 @Data
-@AllArgsConstructor
-@NoArgsConstructor
-public class Worker {
+public class Worker{
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -37,4 +37,14 @@ public class Worker {
 
     @OneToMany(mappedBy = "worker")
     private Set<Schedule> schedules;
+
+    @OneToOne()
+    @JoinColumn(name = "file_id", referencedColumnName = "file")
+    private File file;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

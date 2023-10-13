@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.DayOfWeek;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 
 class MontageTest {
 
@@ -32,7 +33,9 @@ class MontageTest {
 //                                Set.of(3),
 //                                Set.of(1)
 //                        )
-                )
+                ),
+                UUID.randomUUID(),
+                UUID.randomUUID()
         );
         System.out.println(montage.schedule());
     }

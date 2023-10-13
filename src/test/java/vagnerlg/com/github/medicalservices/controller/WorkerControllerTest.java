@@ -6,8 +6,9 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 import vagnerlg.com.github.medicalservices.exception.NotFoundException;
-import vagnerlg.com.github.medicalservices.model.Worker;
-import vagnerlg.com.github.medicalservices.repository.WorkerRepository;
+import vagnerlg.com.github.medicalservices.worker.Worker;
+import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
+import vagnerlg.com.github.medicalservices.worker.WorkerController;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -32,14 +33,18 @@ public class WorkerControllerTest {
 
     @Test
     public void shouldListReturnWorkers() throws Exception {
+        Worker worker = new Worker();
+        worker.setName("Vagner");
+        worker.setOccupation("Advogado");
+
         when(repository.findAll()).thenReturn(
-                Collections.singletonList(new Worker(null, "Vagner", "Advogado", null))
+                Collections.singletonList(worker)
         );
 
         mockMvc.perform(get("/worker"))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string("[{\"id\":null,\"name\":\"Vagner\",\"occupation\":\"Advogado\",\"companies\":null}]"));
+                .andExpect(content().string("[{\"id\":null,\"name\":\"Vagner\",\"occupation\":\"Advogado\",\"companies\":null,\"schedules\":null,\"file\":null,\"createdAt\":null,\"updatedAt\":null}]"));
     }
 
     @Test
