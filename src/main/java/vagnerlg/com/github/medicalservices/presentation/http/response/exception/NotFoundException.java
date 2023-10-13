@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.exception;
+package vagnerlg.com.github.medicalservices.presentation.http.response.exception;
 
 import java.util.UUID;
 

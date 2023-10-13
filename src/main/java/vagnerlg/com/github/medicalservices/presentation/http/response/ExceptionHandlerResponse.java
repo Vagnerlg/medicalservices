@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.response;
+package vagnerlg.com.github.medicalservices.presentation.http.response;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -7,7 +7,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -5,7 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
 import vagnerlg.com.github.medicalservices.worker.WorkerController;

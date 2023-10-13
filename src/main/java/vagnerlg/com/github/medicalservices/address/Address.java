@@ -1,18 +1,17 @@
-package vagnerlg.com.github.medicalservices.model;
+package vagnerlg.com.github.medicalservices.address;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 import vagnerlg.com.github.medicalservices.company.Company;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class Address {
 
     @Id
@@ -46,4 +45,10 @@ public class Address {
     @ManyToOne
     @JoinColumn(name = "company_id")
     private Company company;
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
+
+    @UpdateTimestamp
+    private LocalDateTime updatedAt;
 }

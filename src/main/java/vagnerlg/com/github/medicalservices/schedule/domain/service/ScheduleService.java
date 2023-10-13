@@ -2,7 +2,7 @@ package vagnerlg.com.github.medicalservices.schedule.domain.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.company.CompanyRepository;

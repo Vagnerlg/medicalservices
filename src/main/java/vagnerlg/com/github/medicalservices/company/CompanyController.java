@@ -4,7 +4,7 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
 import java.util.List;
 import java.util.UUID;

@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.controller;
+package vagnerlg.com.github.medicalservices.address;
 
 import jakarta.validation.Valid;
 import org.json.JSONObject;
@@ -6,11 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
-import vagnerlg.com.github.medicalservices.model.Address;
 import vagnerlg.com.github.medicalservices.company.Company;
-import vagnerlg.com.github.medicalservices.repository.AddressRepository;
 import vagnerlg.com.github.medicalservices.company.CompanyRepository;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
 import java.util.List;
 import java.util.Map;

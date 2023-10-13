@@ -3,7 +3,7 @@ package vagnerlg.com.github.medicalservices.file;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import vagnerlg.com.github.medicalservices.exception.NotFoundException;
+import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.file.service.FileService;
 
 import java.io.IOException;
