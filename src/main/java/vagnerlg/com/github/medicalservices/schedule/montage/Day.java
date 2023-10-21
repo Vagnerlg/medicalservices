@@ -3,18 +3,15 @@ package vagnerlg.com.github.medicalservices.schedule.montage;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
-@AllArgsConstructor
-@NoArgsConstructor
 @Data
 public class Day {
 
@@ -26,6 +23,10 @@ public class Day {
     private Integer interval;
 
     public Set<LocalDateTime> schedule(Set<LocalDate> days) {
+        if (Objects.isNull(days)) {
+            days = Set.of();
+        }
+
         Set<LocalDateTime> scheduleMark = new HashSet<>();
         LocalDateTime startTime, endTime = null;
         for (LocalDate day: days) {
@@ -37,7 +38,6 @@ public class Day {
                     startTime = startTime.plusMinutes(interval);
                 }
             }
-
         }
 
         return scheduleMark;
