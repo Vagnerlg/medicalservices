@@ -29,5 +29,4 @@ public class AddressRepositoryTest {
 
         Assert.assertNotNull(saveAddress.getId());
     }
-
 }

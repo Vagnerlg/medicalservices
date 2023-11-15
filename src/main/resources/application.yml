@@ -16,7 +16,9 @@ spring:
     continue-on-error: true
 maps:
   google:
+    enabled: false
     key: ${GOOGLE_MAPS_KEY}
 fileSystem:
   local:
     dir: /tmp/medical-services/files/
+    url: http://localhost/file/get/

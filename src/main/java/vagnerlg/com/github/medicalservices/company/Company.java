@@ -1,16 +1,20 @@
 package vagnerlg.com.github.medicalservices.company;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
-import vagnerlg.com.github.medicalservices.file.File;
 import vagnerlg.com.github.medicalservices.address.Address;
+import vagnerlg.com.github.medicalservices.file.File;
 import vagnerlg.com.github.medicalservices.schedule.Schedule;
+import vagnerlg.com.github.medicalservices.worker.Worker;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Entity
@@ -25,13 +29,20 @@ public class Company {
     private String name;
 
     @OneToMany(mappedBy = "company")
-    private Set<Schedule> schedules;
+    @JsonIgnoreProperties({"company", "address", "worker"})
+    private List<Schedule> schedules;
 
     @OneToMany(mappedBy = "company")
-    private Set<Address> addresses;
+    @JsonIgnoreProperties({"company"})
+    private List<Address> addresses;
 
-    @OneToOne()
+    @ManyToMany(mappedBy = "companies")
+    @JsonIgnoreProperties({"companies"})
+    private List<Worker> workers;
+
+    @OneToOne
     @JoinColumn(name = "file_id", referencedColumnName = "file")
+    @JsonIgnore
     private File file;
 
     @CreationTimestamp
@@ -39,4 +50,12 @@ public class Company {
 
     @UpdateTimestamp
     private LocalDateTime updatedAt;
+
+    public String getImageLink() {
+        if(Objects.isNull(file)){
+            return null;
+        }
+
+        return file.getImageLink();
+    }
 }

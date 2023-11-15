@@ -1,10 +1,12 @@
 package vagnerlg.com.github.medicalservices.file.service;
 
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.web.multipart.MultipartFile;
 import vagnerlg.com.github.medicalservices.file.File;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.util.Optional;
 
 public interface FileService {
-    File upload(String fileName, InputStream inputStream) throws IOException;
+    Optional<File> upload(String fileName, MultipartFile inputStream);
+    Optional<ByteArrayResource> get(String fileName);
 }

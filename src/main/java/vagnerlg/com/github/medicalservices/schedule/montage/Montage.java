@@ -24,6 +24,9 @@ public class Montage {
     @NotNull
     private UUID companyId;
 
+    @NotNull
+    private UUID addressId;
+
     public List<LocalDateTime> schedule()
     {
         Set<LocalDateTime> monthYear = new HashSet<>();

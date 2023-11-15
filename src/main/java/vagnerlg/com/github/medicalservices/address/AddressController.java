@@ -15,7 +15,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/address")
+@RequestMapping("/company")
 public class AddressController {
 
     @Autowired
@@ -27,7 +27,10 @@ public class AddressController {
     @Value("${maps.google.key}")
     private String mapsKey;
 
-    @PostMapping("/{id}")
+    @Value("${maps.google.enabled}")
+    private boolean enabled;
+
+    @PostMapping("/{id}/address")
     public Address create(@PathVariable UUID id, @Valid @RequestBody Address address) {
         Company company = companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
         address.setCompany(company);
@@ -36,20 +39,25 @@ public class AddressController {
         return addressRepository.save(address);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}/address")
     public List<Address> list(@PathVariable UUID id) {
         Company company = companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
 
         return addressRepository.findByCompany(company);
     }
 
-    @GetMapping()
-    public List<Address> listAll() {
-        return addressRepository.findAll();
+    @GetMapping("/{id}/address/{addressId}")
+    public Address list(@PathVariable UUID id, @PathVariable UUID addressId) {
+        companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
+
+        return addressRepository.findById(addressId).orElseThrow(() -> new NotFoundException("Address", addressId));
     }
 
-    private void getLocation(Address address)
-    {
+    private void getLocation(Address address) {
+        if (!enabled) {
+            return;
+        }
+
         String response = (new RestTemplate()).getForObject(
                 "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}",
                 String.class,
@@ -63,7 +71,7 @@ public class AddressController {
                         "key", mapsKey)
         );
 
-        JSONObject json = new JSONObject(response);
+        var json = new JSONObject(response);
         JSONObject location = (JSONObject) json.query("/results/0/geometry/location");
 
         if (location == null) {

@@ -8,7 +8,8 @@ spring:
     password: sa
 maps:
   google:
-    key: teste
+    enabled: false
+    key: null
 fileSystem:
   local:
     dir: /tmp/medical-services/files/
