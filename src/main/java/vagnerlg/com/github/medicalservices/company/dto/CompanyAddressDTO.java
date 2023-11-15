@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.company;
+package vagnerlg.com.github.medicalservices.company.dto;
 
 import jakarta.validation.constraints.NotNull;
 

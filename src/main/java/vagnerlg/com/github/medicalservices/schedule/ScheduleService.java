@@ -4,10 +4,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vagnerlg.com.github.medicalservices.address.Address;
 import vagnerlg.com.github.medicalservices.address.AddressRepository;
+import vagnerlg.com.github.medicalservices.company.CompanyService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.worker.Worker;
-import vagnerlg.com.github.medicalservices.company.CompanyRepository;
 import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
 import vagnerlg.com.github.medicalservices.schedule.montage.Montage;
 
@@ -22,7 +22,7 @@ public class ScheduleService {
     private WorkerRepository workerRepository;
 
     @Autowired
-    private CompanyRepository companyRepository;
+    private CompanyService companyService;
 
     @Autowired
     private AddressRepository addressRepository;
@@ -34,7 +34,7 @@ public class ScheduleService {
         Worker worker = workerRepository.findById(montage.getWorkerId())
                 .orElseThrow(() -> new NotFoundException("worker_id", montage.getWorkerId()));
 
-        Company company = companyRepository.findById(montage.getCompanyId())
+        Company company = companyService.findOne(montage.getCompanyId())
                 .orElseThrow(() -> new NotFoundException("company_id", montage.getCompanyId()));
 
         Address address = addressRepository.findById(montage.getAddressId())

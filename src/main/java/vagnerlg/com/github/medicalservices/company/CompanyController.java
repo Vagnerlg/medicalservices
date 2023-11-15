@@ -3,23 +3,24 @@ package vagnerlg.com.github.medicalservices.company;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import vagnerlg.com.github.medicalservices.company.dto.CompanyAddressDTO;
+import vagnerlg.com.github.medicalservices.company.dto.CompanyDTO;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.worker.Worker;
-import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
+import vagnerlg.com.github.medicalservices.worker.WorkerService;
 
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/company")
-public class CompanyController {
+class CompanyController {
 
     @Autowired
     private CompanyService companyService;
 
     @Autowired
-    private WorkerRepository workerRepository;
+    private WorkerService workerService;
 
     @GetMapping
     public List<Company> list() {
@@ -32,7 +33,7 @@ public class CompanyController {
     }
 
     @PostMapping
-    public Company create(@RequestBody @Valid CompanyDTORequest company) {
+    public Company create(@RequestBody @Valid CompanyDTO company) {
         return companyService.create(company);
     }
 
@@ -42,13 +43,14 @@ public class CompanyController {
     }
 
     @PostMapping("{id}/worker")
-    public Worker addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
+    public Company addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
         Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
-        Worker worker = workerRepository.findById(companyAddressDTO.workerId()).orElseThrow(() -> new NotFoundException("Worker", companyAddressDTO.workerId()));
-        Set<Company> companies = worker.getCompanies();
-        companies.add(company);
-        worker.setCompanies(companies);
+        Worker worker = workerService.findOne(companyAddressDTO.workerId())
+                .orElseThrow(() -> new NotFoundException("Worker", companyAddressDTO.workerId()));
+        List<Worker> workers = company.getWorkers();
+        workers.add(worker);
+        company.setWorkers(workers);
 
-        return workerRepository.save(worker);
+        return companyService.save(company);
     }
 }

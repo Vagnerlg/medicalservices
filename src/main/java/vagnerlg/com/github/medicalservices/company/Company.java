@@ -4,26 +4,22 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
+import lombok.*;
 import vagnerlg.com.github.medicalservices.address.Address;
 import vagnerlg.com.github.medicalservices.file.File;
+import vagnerlg.com.github.medicalservices.global.entity.BaseEntity;
 import vagnerlg.com.github.medicalservices.schedule.Schedule;
 import vagnerlg.com.github.medicalservices.worker.Worker;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Entity
 @Data
-public class Company {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+@EqualsAndHashCode(callSuper = true)
+@Setter(AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class Company extends BaseEntity {
 
     @NotBlank
     private String name;
@@ -44,12 +40,6 @@ public class Company {
     @JoinColumn(name = "file_id", referencedColumnName = "file")
     @JsonIgnore
     private File file;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 
     public String getImageLink() {
         if(Objects.isNull(file)){

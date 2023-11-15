@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import vagnerlg.com.github.medicalservices.company.Company;
-import vagnerlg.com.github.medicalservices.company.CompanyRepository;
+import vagnerlg.com.github.medicalservices.company.CompanyService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
 import java.util.List;
@@ -22,7 +22,7 @@ public class AddressController {
     private AddressRepository addressRepository;
 
     @Autowired
-    private CompanyRepository companyRepository;
+    private CompanyService companyService;
 
     @Value("${maps.google.key}")
     private String mapsKey;
@@ -32,7 +32,7 @@ public class AddressController {
 
     @PostMapping("/{id}/address")
     public Address create(@PathVariable UUID id, @Valid @RequestBody Address address) {
-        Company company = companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
+        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
         address.setCompany(company);
         getLocation(address);
 
@@ -41,14 +41,14 @@ public class AddressController {
 
     @GetMapping("/{id}/address")
     public List<Address> list(@PathVariable UUID id) {
-        Company company = companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
+        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
 
         return addressRepository.findByCompany(company);
     }
 
     @GetMapping("/{id}/address/{addressId}")
     public Address list(@PathVariable UUID id, @PathVariable UUID addressId) {
-        companyRepository.findById(id).orElseThrow(() -> new NotFoundException("Company", id));
+        companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
 
         return addressRepository.findById(addressId).orElseThrow(() -> new NotFoundException("Address", addressId));
     }
