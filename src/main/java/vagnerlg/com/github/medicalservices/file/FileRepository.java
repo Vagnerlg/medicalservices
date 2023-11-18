@@ -2,5 +2,5 @@ package vagnerlg.com.github.medicalservices.file;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface FileRepository extends JpaRepository<File, String> {
+interface FileRepository extends JpaRepository<File, String> {
 }

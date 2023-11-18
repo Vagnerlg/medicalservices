@@ -1,25 +1,23 @@
 package vagnerlg.com.github.medicalservices.worker;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import vagnerlg.com.github.medicalservices.file.File;
+import lombok.*;
 import vagnerlg.com.github.medicalservices.company.Company;
+import vagnerlg.com.github.medicalservices.file.File;
+import vagnerlg.com.github.medicalservices.utils.entity.BaseEntity;
 import vagnerlg.com.github.medicalservices.schedule.Schedule;
 
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Data
-public class Worker{
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID id;
+@EqualsAndHashCode(callSuper = true)
+@Setter(AccessLevel.PACKAGE)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class Worker extends BaseEntity {
 
     @NotBlank
     private String name;
@@ -33,18 +31,14 @@ public class Worker{
             joinColumns = {@JoinColumn(name = "worker_id")},
             inverseJoinColumns = {@JoinColumn(name = "company_id")}
     )
+    @JsonIgnoreProperties({"schedules", "workers"})
     private Set<Company> companies;
 
     @OneToMany(mappedBy = "worker")
-    private Set<Schedule> schedules;
+    @JsonIgnoreProperties({"company", "address", "worker"})
+    private List<Schedule> schedules;
 
     @OneToOne()
     @JoinColumn(name = "file_id", referencedColumnName = "file")
     private File file;
-
-    @CreationTimestamp
-    private LocalDateTime createdAt;
-
-    @UpdateTimestamp
-    private LocalDateTime updatedAt;
 }

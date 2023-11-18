@@ -8,8 +8,8 @@ import vagnerlg.com.github.medicalservices.company.CompanyService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.worker.Worker;
-import vagnerlg.com.github.medicalservices.worker.WorkerRepository;
 import vagnerlg.com.github.medicalservices.schedule.montage.Montage;
+import vagnerlg.com.github.medicalservices.worker.WorkerService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -19,7 +19,7 @@ import java.util.List;
 public class ScheduleService {
 
     @Autowired
-    private WorkerRepository workerRepository;
+    private WorkerService workerService;
 
     @Autowired
     private CompanyService companyService;
@@ -31,7 +31,7 @@ public class ScheduleService {
     private ScheduleRepository scheduleRepository;
 
     public List<Schedule> createByMontage(Montage montage) {
-        Worker worker = workerRepository.findById(montage.getWorkerId())
+        Worker worker = workerService.findOne(montage.getWorkerId())
                 .orElseThrow(() -> new NotFoundException("worker_id", montage.getWorkerId()));
 
         Company company = companyService.findOne(montage.getCompanyId())

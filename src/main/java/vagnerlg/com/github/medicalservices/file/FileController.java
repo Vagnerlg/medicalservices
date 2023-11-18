@@ -14,23 +14,15 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/file")
-public class FileController {
+class FileController {
 
     @Autowired
     private FileService fileService;
-
-    @Autowired
-    private FileRepository fileRepository;
 
     @PostMapping("/upload")
     public File upload(@RequestParam("file") MultipartFile file) {
         return fileService.upload(Objects.requireNonNull(file.getOriginalFilename()), file)
                 .orElseThrow(() -> new NotFoundException("file", UUID.randomUUID()));
-    }
-
-    @GetMapping()
-    public List<File> list() {
-        return fileRepository.findAll();
     }
 
     @GetMapping(value = "/get/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)

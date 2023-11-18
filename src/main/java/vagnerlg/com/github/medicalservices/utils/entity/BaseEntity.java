@@ -1,4 +1,4 @@
-package vagnerlg.com.github.medicalservices.global.entity;
+package vagnerlg.com.github.medicalservices.utils.entity;
 
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

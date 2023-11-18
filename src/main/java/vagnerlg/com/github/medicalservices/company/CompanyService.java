@@ -3,7 +3,7 @@ package vagnerlg.com.github.medicalservices.company;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vagnerlg.com.github.medicalservices.company.dto.CompanyDTO;
-import vagnerlg.com.github.medicalservices.file.FileRepository;
+import vagnerlg.com.github.medicalservices.file.FileService;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,7 +16,7 @@ public class CompanyService {
     private CompanyRepository repository;
 
     @Autowired
-    private FileRepository fileRepository;
+    private FileService fileService;
 
     public List<Company> list() {
         return repository.findAll();
@@ -29,7 +29,7 @@ public class CompanyService {
     public Company create(CompanyDTO companyDTORequest) {
         Company company = new Company();
         company.setName(companyDTORequest.name());
-        fileRepository.findById(companyDTORequest.file()).ifPresent(company::setFile);
+        fileService.findOne(companyDTORequest.file()).ifPresent(company::setFile);
 
         return repository.save(company);
     }

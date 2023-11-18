@@ -6,14 +6,12 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import vagnerlg.com.github.medicalservices.file.File;
-import vagnerlg.com.github.medicalservices.file.FileRepository;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -21,7 +19,7 @@ import java.util.UUID;
 public class LocalFileService implements FileService {
 
     @Autowired
-    private FileRepository fileRepository;
+    private vagnerlg.com.github.medicalservices.file.FileService fileService;
 
     @Value("${fileSystem.local.dir}")
     private String basePathDir;
@@ -40,7 +38,7 @@ public class LocalFileService implements FileService {
             }
         }
 
-        Path destinationFile = basePath.resolve(Paths.get(newFileName))
+        Path destinationFile = basePath.resolve(Paths.get(getNewFileName(fileName)))
                 .normalize().toAbsolutePath();
 
         try {
@@ -50,14 +48,14 @@ public class LocalFileService implements FileService {
             return Optional.empty();
         }
 
-        File fileEntity = new File(
-                "local",
-                basePathDir,
-                newFileName,
-                baseUrl
-        );
+        File fileEntity = File.builder()
+            .drive("local")
+            .path(basePathDir)
+            .baseUrl(baseUrl)
+            .file(newFileName)
+            .build();
 
-        return Optional.of(fileRepository.save(fileEntity));
+        return Optional.of(fileService.save(fileEntity));
     }
 
     @Override

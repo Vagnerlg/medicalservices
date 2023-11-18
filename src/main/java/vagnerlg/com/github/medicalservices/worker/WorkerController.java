@@ -11,7 +11,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/worker")
-public class WorkerController {
+class WorkerController {
 
     @Autowired
     private WorkerRepository repository;
