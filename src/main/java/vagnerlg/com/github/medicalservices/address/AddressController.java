@@ -1,31 +1,23 @@
 package vagnerlg.com.github.medicalservices.address;
 
 import jakarta.validation.Valid;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
-import vagnerlg.com.github.medicalservices.company.Company;
-import vagnerlg.com.github.medicalservices.company.CompanyService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/company")
 class AddressController {
 
-    @Autowired
-    private AddressRepository addressRepository;
+    private final AddressService addressService;
 
     @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    private AddressService addressService;
+    AddressController(AddressService addressService) {
+        this.addressService = addressService;
+    }
 
     @PostMapping("/{id}/address")
     Address create(@PathVariable UUID id, @Valid @RequestBody Address address) {

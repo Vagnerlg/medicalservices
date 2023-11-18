@@ -31,7 +31,7 @@ class AddressControllerTest {
     }
 
     @Test
-    void whenCreateAddressWithEmptyDataAndReturnErrors() {
+    void testWhenCreateAddressWithEmptyDataAndReturnErrors() {
         var message = "não deve ser nulo";
         Map<String, String> expected = Map.of(
             "number", message,

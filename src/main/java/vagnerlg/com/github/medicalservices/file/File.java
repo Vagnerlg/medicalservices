@@ -29,6 +29,6 @@ public class File {
     private String baseUrl;
 
     public String getImageLink() {
-        return getBaseUrl() + getFile();
+        return baseUrl + file;
     }
 }

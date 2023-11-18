@@ -28,11 +28,23 @@ public class Day {
         }
 
         Set<LocalDateTime> scheduleMark = new HashSet<>();
-        LocalDateTime startTime, endTime = null;
+        LocalDateTime startTime = null;
+        LocalDateTime endTime = null;
         for (LocalDate day: days) {
             for (TimeGroup timeGroup: timeGroups) {
-                startTime = LocalDateTime.of(day.getYear(), day.getMonth(), day.getDayOfMonth(), timeGroup.getStart().getHour(), timeGroup.getStart().getMinute());
-                endTime = LocalDateTime.of(day.getYear(), day.getMonth(), day.getDayOfMonth(), timeGroup.getEnd().getHour(), timeGroup.getEnd().getMinute());
+                startTime = LocalDateTime.of(
+                        day.getYear(),
+                        day.getMonth(),
+                        day.getDayOfMonth(),
+                        timeGroup.getStart().getHour(),
+                        timeGroup.getStart().getMinute());
+
+                endTime = LocalDateTime.of(
+                        day.getYear(),
+                        day.getMonth(),
+                        day.getDayOfMonth(),
+                        timeGroup.getEnd().getHour(),
+                        timeGroup.getEnd().getMinute());
                 while(startTime.isBefore(endTime)) {
                     scheduleMark.add(startTime);
                     startTime = startTime.plusMinutes(interval);

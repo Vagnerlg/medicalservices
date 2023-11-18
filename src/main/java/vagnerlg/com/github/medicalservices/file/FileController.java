@@ -8,7 +8,6 @@ import org.springframework.web.multipart.MultipartFile;
 import vagnerlg.com.github.medicalservices.file.service.FileService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 
-import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -16,8 +15,12 @@ import java.util.UUID;
 @RequestMapping("/file")
 class FileController {
 
+    private final FileService fileService;
+
     @Autowired
-    private FileService fileService;
+    public FileController(FileService fileService) {
+        this.fileService = fileService;
+    }
 
     @PostMapping("/upload")
     File upload(@RequestParam("file") MultipartFile file) {

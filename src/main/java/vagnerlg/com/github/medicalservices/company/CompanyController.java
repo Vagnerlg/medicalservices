@@ -16,11 +16,16 @@ import java.util.UUID;
 @RequestMapping("/company")
 class CompanyController {
 
-    @Autowired
-    private CompanyService companyService;
+    private static final String NAME = "Company";
+
+    private final CompanyService companyService;
+    private final WorkerService workerService;
 
     @Autowired
-    private WorkerService workerService;
+    public CompanyController(CompanyService companyService, WorkerService workerService) {
+        this.companyService = companyService;
+        this.workerService = workerService;
+    }
 
     @GetMapping
     List<Company> list() {
@@ -29,7 +34,7 @@ class CompanyController {
 
     @GetMapping("/{id}")
     Company get(@PathVariable UUID id) {
-        return companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
+        return companyService.findOne(id).orElseThrow(() -> new NotFoundException(NAME, id));
     }
 
     @PostMapping
@@ -39,12 +44,12 @@ class CompanyController {
 
     @PutMapping("/{id}")
     Company edit(@RequestBody @Valid Company company, @PathVariable UUID id) {
-        return companyService.update(id, company).orElseThrow(() -> new NotFoundException("Company", id));
+        return companyService.update(id, company).orElseThrow(() -> new NotFoundException(NAME, id));
     }
 
     @PostMapping("{id}/worker")
     Company addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
-        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
+        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException(NAME, id));
         Worker worker = workerService.findOne(companyAddressDTO.workerId())
                 .orElseThrow(() -> new NotFoundException("Worker", companyAddressDTO.workerId()));
         List<Worker> workers = company.getWorkers();

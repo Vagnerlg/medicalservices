@@ -17,17 +17,23 @@ import java.util.UUID;
 @Service
 public class AddressService {
 
-    @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    private AddressRepository addressRepository;
+    private final CompanyService companyService;
+    private final AddressRepository addressRepository;
 
     @Value("${maps.google.key}")
     private String mapsKey;
 
     @Value("${maps.google.enabled}")
     private boolean enabled;
+
+    @Autowired
+    AddressService(
+            CompanyService companyService,
+            AddressRepository addressRepository
+    ) {
+        this.companyService = companyService;
+        this.addressRepository = addressRepository;
+    }
 
     public Address create(UUID companyId, Address address) {
         Company company = companyService.findOne(companyId)

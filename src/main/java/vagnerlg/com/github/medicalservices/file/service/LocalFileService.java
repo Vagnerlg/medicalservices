@@ -9,7 +9,6 @@ import vagnerlg.com.github.medicalservices.file.File;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.Optional;
@@ -18,8 +17,7 @@ import java.util.UUID;
 @Service
 public class LocalFileService implements FileService {
 
-    @Autowired
-    private vagnerlg.com.github.medicalservices.file.FileService fileService;
+    private final vagnerlg.com.github.medicalservices.file.FileService fileService;
 
     @Value("${fileSystem.local.dir}")
     private String basePathDir;
@@ -27,9 +25,13 @@ public class LocalFileService implements FileService {
     @Value("${fileSystem.local.url}")
     private String baseUrl;
 
+    @Autowired
+    public LocalFileService(vagnerlg.com.github.medicalservices.file.FileService fileService) {
+        this.fileService = fileService;
+    }
+
     public Optional<File> upload(String fileName, MultipartFile multipartFile){
-        String newFileName = getNewFileName(fileName);
-        Path basePath = Paths.get(basePathDir);
+        var basePath = Paths.get(basePathDir);
         if(!Files.exists(basePath)) {
             try {
                 Files.createDirectories(basePath);
@@ -38,7 +40,8 @@ public class LocalFileService implements FileService {
             }
         }
 
-        Path destinationFile = basePath.resolve(Paths.get(getNewFileName(fileName)))
+        String newFileName = getNewFileName(fileName);
+        var destinationFile = basePath.resolve(Paths.get(newFileName))
                 .normalize().toAbsolutePath();
 
         try {
@@ -48,7 +51,7 @@ public class LocalFileService implements FileService {
             return Optional.empty();
         }
 
-        File fileEntity = File.builder()
+        var fileEntity = File.builder()
             .drive("local")
             .path(basePathDir)
             .baseUrl(baseUrl)
@@ -60,7 +63,7 @@ public class LocalFileService implements FileService {
 
     @Override
     public Optional<ByteArrayResource> get(String fileName) {
-        Path path = Paths.get(basePathDir + fileName);
+        var path = Paths.get(basePathDir + fileName);
         try {
             return Optional.of(new ByteArrayResource(Files.readAllBytes(path)));
         } catch (IOException e) {
@@ -69,7 +72,7 @@ public class LocalFileService implements FileService {
     }
 
     private static String getNewFileName(String fileName) {
-        String extension = fileName.substring(fileName.indexOf('.') - 1);
+        var extension = fileName.substring(fileName.indexOf('.') - 1);
 
         return UUID.randomUUID() + extension;
     }

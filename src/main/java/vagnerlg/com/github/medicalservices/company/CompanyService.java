@@ -12,11 +12,14 @@ import java.util.UUID;
 @Service
 public class CompanyService {
 
-    @Autowired
     private CompanyRepository repository;
+    private FileService fileService;
 
     @Autowired
-    private FileService fileService;
+    public CompanyService(CompanyRepository repository, FileService fileService) {
+        this.repository = repository;
+        this.fileService = fileService;
+    }
 
     public List<Company> list() {
         return repository.findAll();
@@ -27,7 +30,7 @@ public class CompanyService {
     }
 
     public Company create(CompanyDTO companyDTORequest) {
-        Company company = new Company();
+        var company = new Company();
         company.setName(companyDTORequest.name());
         fileService.findOne(companyDTORequest.file()).ifPresent(company::setFile);
 
@@ -35,9 +38,9 @@ public class CompanyService {
     }
 
     public Optional<Company> update(UUID id, Company company) {
-        return repository.findById(id).map(c -> {
-            c.setName(company.getName());
-            return  repository.save(c);
+        return repository.findById(id).map((Company companyEdit) -> {
+            companyEdit.setName(company.getName());
+            return  repository.save(companyEdit);
         });
     }
 

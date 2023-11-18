@@ -27,8 +27,7 @@ public class Montage {
     @NotNull
     private UUID addressId;
 
-    public List<LocalDateTime> schedule()
-    {
+    public List<LocalDateTime> schedule() {
         Set<LocalDateTime> monthYear = new HashSet<>();
         for (Month month: months) {
             monthYear.addAll(month.schedule());

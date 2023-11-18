@@ -16,14 +16,21 @@ import java.util.List;
 @Service
 public class ScheduleService {
 
-    @Autowired
-    private WorkerService workerService;
+    private static final int INTERVAL_MIN  = 30;
+
+    private final WorkerService workerService;
+    private final AddressService addressService;
+    private final ScheduleRepository scheduleRepository;
 
     @Autowired
-    private AddressService addressService;
-
-    @Autowired
-    private ScheduleRepository scheduleRepository;
+    ScheduleService(
+            WorkerService workerService,
+            AddressService addressService,
+            ScheduleRepository scheduleRepository) {
+        this.workerService = workerService;
+        this.addressService = addressService;
+        this.scheduleRepository = scheduleRepository;
+    }
 
     public List<Schedule> createByMontage(Montage montage) {
         Worker worker = workerService.findOne(montage.getWorkerId())
@@ -34,15 +41,14 @@ public class ScheduleService {
 
         List<Schedule> schedules = new ArrayList<>();
         for (LocalDateTime date : montage.schedule()) {
-            schedules.add(new Schedule(
-                    null,
-                    date,
-                    date.plusMinutes(30),
-                    worker,
-                    address.getCompany(),
-                    address,
-                    null
-            ));
+            schedules.add(Schedule.builder()
+                .start(date)
+                .end(date.plusMinutes(INTERVAL_MIN))
+                .company(address.getCompany())
+                .address(address)
+                .worker(worker)
+                .build()
+            );
         }
 
         return scheduleRepository.saveAll(schedules);

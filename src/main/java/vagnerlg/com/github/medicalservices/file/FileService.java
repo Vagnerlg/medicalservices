@@ -8,10 +8,14 @@ import java.util.Optional;
 @Service
 public class FileService {
 
-    @Autowired
     private FileRepository fileRepository;
-    public File save(File file)
-    {
+
+    @Autowired
+    public FileService(FileRepository fileRepository) {
+        this.fileRepository = fileRepository;
+    }
+
+    public File save(File file) {
         return fileRepository.save(file);
     }
 

@@ -27,8 +27,8 @@ public class ExceptionHandlerResponse {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Map<String,String> notFoundHandler(MethodArgumentNotValidException ex) {
         Map<String,String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach((error) -> {
-            String field = ((FieldError) error).getField();
+        ex.getBindingResult().getFieldErrors().forEach((FieldError error) -> {
+            String field = error.getField();
             String msg = error.getDefaultMessage();
 
             errors.put(field, msg);

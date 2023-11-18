@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.file.File;
-import vagnerlg.com.github.medicalservices.utils.entity.BaseEntity;
 import vagnerlg.com.github.medicalservices.schedule.Schedule;
+import vagnerlg.com.github.medicalservices.utils.entity.BaseEntity;
 
 import java.util.List;
 import java.util.Set;

@@ -13,8 +13,12 @@ import java.util.UUID;
 @RequestMapping("/worker")
 class WorkerController {
 
+    private final WorkerRepository repository;
+
     @Autowired
-    private WorkerRepository repository;
+    public WorkerController(WorkerRepository repository) {
+        this.repository = repository;
+    }
 
     @GetMapping
     public List<Worker> list() {
@@ -34,10 +38,10 @@ class WorkerController {
     @PutMapping("/{id}")
     Worker edit(@RequestBody @Valid Worker worker, @PathVariable UUID id) {
         return repository.findById(id)
-            .map(w -> {
-                w.setName(worker.getName());
-                w.setOccupation(worker.getOccupation());
-                return repository.save(w);
+            .map((Worker workerEdit) -> {
+                workerEdit.setName(worker.getName());
+                workerEdit.setOccupation(worker.getOccupation());
+                return repository.save(workerEdit);
             }).orElseThrow(() -> new NotFoundException("Worker", id));
     }
 

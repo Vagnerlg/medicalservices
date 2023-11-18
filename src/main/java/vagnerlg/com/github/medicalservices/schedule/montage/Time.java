@@ -8,13 +8,13 @@ import lombok.Data;
 @Data
 public class Time {
 
-        @Min(0)
-        @Max(23)
-        @NotNull
-        private Integer hour;
+    @Min(0)
+    @Max(23)
+    @NotNull
+    private Integer hour;
 
-        @Min(0)
-        @Max(59)
-        @NotNull
-        private Integer minute;
+    @Min(0)
+    @Max(59)
+    @NotNull
+    private Integer minute;
 }

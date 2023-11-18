@@ -1,16 +1,13 @@
 package vagnerlg.com.github.medicalservices.address;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
 import vagnerlg.com.github.medicalservices.company.Company;
 import vagnerlg.com.github.medicalservices.utils.entity.BaseEntity;
-
-import java.time.LocalDateTime;
-import java.util.UUID;
 
 @Entity
 @Data
