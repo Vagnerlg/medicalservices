@@ -16,7 +16,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/company")
-public class AddressController {
+class AddressController {
 
     @Autowired
     private AddressRepository addressRepository;
@@ -24,61 +24,21 @@ public class AddressController {
     @Autowired
     private CompanyService companyService;
 
-    @Value("${maps.google.key}")
-    private String mapsKey;
-
-    @Value("${maps.google.enabled}")
-    private boolean enabled;
+    @Autowired
+    private AddressService addressService;
 
     @PostMapping("/{id}/address")
     public Address create(@PathVariable UUID id, @Valid @RequestBody Address address) {
-        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
-        address.setCompany(company);
-        getLocation(address);
-
-        return addressRepository.save(address);
+        return addressService.create(id, address);
     }
 
     @GetMapping("/{id}/address")
     public List<Address> list(@PathVariable UUID id) {
-        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
-
-        return addressRepository.findByCompany(company);
+        return addressService.findByCompany(id).orElseThrow(() -> new NotFoundException("Company", id));
     }
 
     @GetMapping("/{id}/address/{addressId}")
     public Address list(@PathVariable UUID id, @PathVariable UUID addressId) {
-        companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
-
-        return addressRepository.findById(addressId).orElseThrow(() -> new NotFoundException("Address", addressId));
-    }
-
-    private void getLocation(Address address) {
-        if (!enabled) {
-            return;
-        }
-
-        String response = (new RestTemplate()).getForObject(
-                "https://maps.googleapis.com/maps/api/geocode/json?address={address}&key={key}",
-                String.class,
-                Map.of(
-                        "address", address.getStreet() + ", " +
-                                address.getNumber() + " - " +
-                                address.getDistrict() + ", " +
-                                address.getMunicipal() + " - " +
-                                address.getState() + ", " +
-                                address.getPostalCode() + ", Brazil",
-                        "key", mapsKey)
-        );
-
-        var json = new JSONObject(response);
-        JSONObject location = (JSONObject) json.query("/results/0/geometry/location");
-
-        if (location == null) {
-            return;
-        }
-
-        address.setLatitude(location.getFloat("lng"));
-        address.setLongitude(location.getFloat("lat"));
+        return addressService.findOne(id, addressId).orElseThrow(() -> new NotFoundException("Address", addressId));
     }
 }

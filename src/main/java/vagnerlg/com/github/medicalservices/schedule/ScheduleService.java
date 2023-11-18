@@ -3,12 +3,10 @@ package vagnerlg.com.github.medicalservices.schedule;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import vagnerlg.com.github.medicalservices.address.Address;
-import vagnerlg.com.github.medicalservices.address.AddressRepository;
-import vagnerlg.com.github.medicalservices.company.CompanyService;
+import vagnerlg.com.github.medicalservices.address.AddressService;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
-import vagnerlg.com.github.medicalservices.company.Company;
-import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.schedule.montage.Montage;
+import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.worker.WorkerService;
 
 import java.time.LocalDateTime;
@@ -22,10 +20,7 @@ public class ScheduleService {
     private WorkerService workerService;
 
     @Autowired
-    private CompanyService companyService;
-
-    @Autowired
-    private AddressRepository addressRepository;
+    private AddressService addressService;
 
     @Autowired
     private ScheduleRepository scheduleRepository;
@@ -34,10 +29,7 @@ public class ScheduleService {
         Worker worker = workerService.findOne(montage.getWorkerId())
                 .orElseThrow(() -> new NotFoundException("worker_id", montage.getWorkerId()));
 
-        Company company = companyService.findOne(montage.getCompanyId())
-                .orElseThrow(() -> new NotFoundException("company_id", montage.getCompanyId()));
-
-        Address address = addressRepository.findById(montage.getAddressId())
+        Address address = addressService.findOne(montage.getCompanyId(), montage.getAddressId())
                 .orElseThrow(() -> new NotFoundException("address_id", montage.getAddressId()));
 
         List<Schedule> schedules = new ArrayList<>();
@@ -47,7 +39,7 @@ public class ScheduleService {
                     date,
                     date.plusMinutes(30),
                     worker,
-                    company,
+                    address.getCompany(),
                     address,
                     null
             ));
