@@ -23,27 +23,27 @@ class CompanyController {
     private WorkerService workerService;
 
     @GetMapping
-    public List<Company> list() {
+    List<Company> list() {
         return companyService.list();
     }
 
     @GetMapping("/{id}")
-    public Company get(@PathVariable UUID id) {
+    Company get(@PathVariable UUID id) {
         return companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
     }
 
     @PostMapping
-    public Company create(@RequestBody @Valid CompanyDTO company) {
+    Company create(@RequestBody @Valid CompanyDTO company) {
         return companyService.create(company);
     }
 
     @PutMapping("/{id}")
-    public Company edit(@RequestBody @Valid Company company, @PathVariable UUID id) {
+    Company edit(@RequestBody @Valid Company company, @PathVariable UUID id) {
         return companyService.update(id, company).orElseThrow(() -> new NotFoundException("Company", id));
     }
 
     @PostMapping("{id}/worker")
-    public Company addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
+    Company addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
         Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException("Company", id));
         Worker worker = workerService.findOne(companyAddressDTO.workerId())
                 .orElseThrow(() -> new NotFoundException("Worker", companyAddressDTO.workerId()));

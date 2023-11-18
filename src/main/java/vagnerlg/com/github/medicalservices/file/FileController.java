@@ -20,13 +20,14 @@ class FileController {
     private FileService fileService;
 
     @PostMapping("/upload")
-    public File upload(@RequestParam("file") MultipartFile file) {
+    File upload(@RequestParam("file") MultipartFile file) {
         return fileService.upload(Objects.requireNonNull(file.getOriginalFilename()), file)
                 .orElseThrow(() -> new NotFoundException("file", UUID.randomUUID()));
     }
 
     @GetMapping(value = "/get/{fileName}", produces = MediaType.IMAGE_JPEG_VALUE)
-    public @ResponseBody Resource getFile(@PathVariable("fileName") String fileName) {
+    @ResponseBody
+    Resource getFile(@PathVariable("fileName") String fileName) {
         return fileService.get(fileName).orElseThrow(
                 () -> new NotFoundException("file", UUID.randomUUID()));
     }
