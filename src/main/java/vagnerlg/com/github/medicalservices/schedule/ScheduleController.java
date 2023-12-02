@@ -1,5 +1,6 @@
 package vagnerlg.com.github.medicalservices.schedule;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -10,6 +11,7 @@ import vagnerlg.com.github.medicalservices.schedule.montage.Montage;
 
 import java.util.List;
 
+@Tag(name = "Schedule", description = "Entidade referente a agendamento e marcações de data/horários")
 @RestController
 @RequestMapping("/schedule")
 class ScheduleController {

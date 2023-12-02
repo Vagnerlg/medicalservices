@@ -1,10 +1,10 @@
-package vagnerlg.com.github.medicalservices.company.dto;
+package vagnerlg.com.github.medicalservices.company.request;
 
 import jakarta.validation.constraints.NotNull;
 
 import java.util.UUID;
 
-public record CompanyAddressDTO(
+public record CompanyWorkerRequest(
         @NotNull UUID workerId
 ) {
 }

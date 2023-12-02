@@ -1,5 +1,7 @@
 package vagnerlg.com.github.medicalservices.address;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.tags.Tags;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -8,6 +10,7 @@ import vagnerlg.com.github.medicalservices.presentation.http.response.exception.
 import java.util.List;
 import java.util.UUID;
 
+@Tag(name="Company")
 @RestController
 @RequestMapping("/company")
 class AddressController {

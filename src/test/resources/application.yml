@@ -13,3 +13,4 @@ maps:
 fileSystem:
   local:
     dir: /tmp/medical-services/files/
+    url: http://localhost/file/get/

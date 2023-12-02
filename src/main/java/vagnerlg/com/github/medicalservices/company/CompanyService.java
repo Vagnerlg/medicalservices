@@ -1,45 +1,44 @@
 package vagnerlg.com.github.medicalservices.company;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import vagnerlg.com.github.medicalservices.company.dto.CompanyDTO;
+import vagnerlg.com.github.medicalservices.company.request.CompanyRequest;
 import vagnerlg.com.github.medicalservices.file.FileService;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class CompanyService {
 
-    private CompanyRepository repository;
-    private FileService fileService;
+    private final CompanyRepository repository;
+    private final FileService fileService;
 
-    @Autowired
-    public CompanyService(CompanyRepository repository, FileService fileService) {
-        this.repository = repository;
-        this.fileService = fileService;
-    }
-
-    public List<Company> list() {
-        return repository.findAll();
+    public Page<Company> list(Pageable pageable) {
+        return repository.findAll(pageable);
     }
 
     public Optional<Company> findOne(UUID id) {
         return repository.findById(id);
     }
 
-    public Company create(CompanyDTO companyDTORequest) {
+    public Company create(CompanyRequest companyRequest) {
         var company = new Company();
-        company.setName(companyDTORequest.name());
-        fileService.findOne(companyDTORequest.file()).ifPresent(company::setFile);
+        company.setName(companyRequest.name());
+        if (companyRequest.fileName() != null) {
+            fileService.findOne(companyRequest.fileName()).ifPresent(company::setFile);
+        }
 
         return repository.save(company);
     }
 
-    public Optional<Company> update(UUID id, Company company) {
-        return repository.findById(id).map((Company companyEdit) -> {
-            companyEdit.setName(company.getName());
+    public Optional<Company> update(UUID id, CompanyRequest company) {
+        return findOne(id).map((Company companyEdit) -> {
+            companyEdit.setName(company.name());
+            fileService.findOne(company.fileName()).ifPresent(companyEdit::setFile);
             return  repository.save(companyEdit);
         });
     }

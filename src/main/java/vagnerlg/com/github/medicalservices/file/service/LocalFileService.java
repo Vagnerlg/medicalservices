@@ -1,5 +1,6 @@
 package vagnerlg.com.github.medicalservices.file.service;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class LocalFileService implements FileService {
 
     private final vagnerlg.com.github.medicalservices.file.FileService fileService;
@@ -24,11 +26,6 @@ public class LocalFileService implements FileService {
 
     @Value("${fileSystem.local.url}")
     private String baseUrl;
-
-    @Autowired
-    public LocalFileService(vagnerlg.com.github.medicalservices.file.FileService fileService) {
-        this.fileService = fileService;
-    }
 
     public Optional<File> upload(String fileName, MultipartFile multipartFile){
         var basePath = Paths.get(basePathDir);

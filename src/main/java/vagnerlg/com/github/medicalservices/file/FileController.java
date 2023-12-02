@@ -1,6 +1,7 @@
 package vagnerlg.com.github.medicalservices.file;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.Resource;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -11,18 +12,15 @@ import vagnerlg.com.github.medicalservices.presentation.http.response.exception.
 import java.util.Objects;
 import java.util.UUID;
 
+@Tag(name = "File", description = "Upload de imagens para varias entidades")
 @RestController
 @RequestMapping("/file")
+@RequiredArgsConstructor
 class FileController {
 
     private final FileService fileService;
 
-    @Autowired
-    public FileController(FileService fileService) {
-        this.fileService = fileService;
-    }
-
-    @PostMapping("/upload")
+    @PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_VALUE)
     File upload(@RequestParam("file") MultipartFile file) {
         return fileService.upload(Objects.requireNonNull(file.getOriginalFilename()), file)
                 .orElseThrow(() -> new NotFoundException("file", UUID.randomUUID()));

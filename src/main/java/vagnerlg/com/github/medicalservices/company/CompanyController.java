@@ -1,19 +1,27 @@
 package vagnerlg.com.github.medicalservices.company;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
-import vagnerlg.com.github.medicalservices.company.dto.CompanyAddressDTO;
-import vagnerlg.com.github.medicalservices.company.dto.CompanyDTO;
+import vagnerlg.com.github.medicalservices.company.request.CompanyRequest;
+import vagnerlg.com.github.medicalservices.company.request.CompanyWorkerRequest;
 import vagnerlg.com.github.medicalservices.presentation.http.response.exception.NotFoundException;
 import vagnerlg.com.github.medicalservices.worker.Worker;
 import vagnerlg.com.github.medicalservices.worker.WorkerService;
 
-import java.util.List;
 import java.util.UUID;
 
+@Tag(name="Company", description="Entidade relacionada a empresas e suas localidades")
 @RestController
 @RequestMapping("/company")
+@RequiredArgsConstructor
 class CompanyController {
 
     private static final String NAME = "Company";
@@ -21,40 +29,47 @@ class CompanyController {
     private final CompanyService companyService;
     private final WorkerService workerService;
 
-    @Autowired
-    public CompanyController(CompanyService companyService, WorkerService workerService) {
-        this.companyService = companyService;
-        this.workerService = workerService;
-    }
-
+    @Operation(
+        parameters = {
+            @Parameter(in = ParameterIn.QUERY, name = "page"),
+            @Parameter(in = ParameterIn.QUERY, name = "size")
+        })
     @GetMapping
-    List<Company> list() {
-        return companyService.list();
+    Page<Company> list(@PageableDefault @Parameter(hidden = true) Pageable pageable) {
+        return companyService.list(pageable);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}")
     Company get(@PathVariable UUID id) {
         return companyService.findOne(id).orElseThrow(() -> new NotFoundException(NAME, id));
     }
 
     @PostMapping
-    Company create(@RequestBody @Valid CompanyDTO company) {
+    Company create(@RequestBody @Valid CompanyRequest company) {
         return companyService.create(company);
     }
 
     @PutMapping("/{id}")
-    Company edit(@RequestBody @Valid Company company, @PathVariable UUID id) {
+    Company update(@RequestBody @Valid CompanyRequest company, @PathVariable UUID id) {
         return companyService.update(id, company).orElseThrow(() -> new NotFoundException(NAME, id));
     }
 
     @PostMapping("{id}/worker")
-    Company addWorker(@RequestBody @Valid CompanyAddressDTO companyAddressDTO, @PathVariable UUID id) {
+    Company addWorker(@RequestBody @Valid CompanyWorkerRequest workerRequest, @PathVariable UUID id) {
         Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException(NAME, id));
-        Worker worker = workerService.findOne(companyAddressDTO.workerId())
-                .orElseThrow(() -> new NotFoundException("Worker", companyAddressDTO.workerId()));
-        List<Worker> workers = company.getWorkers();
-        workers.add(worker);
-        company.setWorkers(workers);
+        Worker worker = workerService.findOne(workerRequest.workerId())
+                .orElseThrow(() -> new NotFoundException("Worker", workerRequest.workerId()));
+        company.getWorkers().add(worker);
+
+        return companyService.save(company);
+    }
+
+    @DeleteMapping("{id}/worker/{workerId}")
+    Company removeWorker(@PathVariable("id") UUID id, @PathVariable("workerId") UUID workerId) {
+        Company company = companyService.findOne(id).orElseThrow(() -> new NotFoundException(NAME, id));
+        Worker worker = workerService.findOne(workerId)
+                .orElseThrow(() -> new NotFoundException("Worker", workerId));
+        company.getWorkers().remove(worker);
 
         return companyService.save(company);
     }
